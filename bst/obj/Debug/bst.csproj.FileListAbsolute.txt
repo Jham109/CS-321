@@ -1,0 +1,7 @@
+C:\Users\Joseph\Source\Repos\321-hw1\bst\bin\Debug\bst.exe.config
+C:\Users\Joseph\Source\Repos\321-hw1\bst\bin\Debug\bst.exe
+C:\Users\Joseph\Source\Repos\321-hw1\bst\bin\Debug\bst.pdb
+C:\Users\Joseph\Source\Repos\321-hw1\bst\obj\Debug\bst.csprojAssemblyReference.cache
+C:\Users\Joseph\Source\Repos\321-hw1\bst\obj\Debug\bst.csproj.CoreCompileInputs.cache
+C:\Users\Joseph\Source\Repos\321-hw1\bst\obj\Debug\bst.exe
+C:\Users\Joseph\Source\Repos\321-hw1\bst\obj\Debug\bst.pdb

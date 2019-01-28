@@ -1,6 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\bst",
+    "\\bst\\Properties"
   ],
-  "PreviewInSolutionExplorer": false
+  "SelectedNode": "\\bst\\Program.cs",
+  "PreviewInSolutionExplorer": true
 }

@@ -1,0 +1,15 @@
+C:\Users\Joseph\source\repos\321-hw1\Tree.UnitTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Users\Joseph\source\repos\321-hw1\Tree.UnitTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Users\Joseph\source\repos\321-hw1\Tree.UnitTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Users\Joseph\source\repos\321-hw1\Tree.UnitTests\bin\Debug\Tree.UnitTests.dll
+C:\Users\Joseph\source\repos\321-hw1\Tree.UnitTests\bin\Debug\Tree.UnitTests.pdb
+C:\Users\Joseph\source\repos\321-hw1\Tree.UnitTests\bin\Debug\Tree.UnitTests.dll.CodeAnalysisLog.xml
+C:\Users\Joseph\source\repos\321-hw1\Tree.UnitTests\bin\Debug\Tree.UnitTests.dll.lastcodeanalysissucceeded
+C:\Users\Joseph\source\repos\321-hw1\Tree.UnitTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
+C:\Users\Joseph\source\repos\321-hw1\Tree.UnitTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
+C:\Users\Joseph\source\repos\321-hw1\Tree.UnitTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
+C:\Users\Joseph\source\repos\321-hw1\Tree.UnitTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
+C:\Users\Joseph\source\repos\321-hw1\Tree.UnitTests\obj\Debug\Tree.UnitTests.csproj.CoreCompileInputs.cache
+C:\Users\Joseph\source\repos\321-hw1\Tree.UnitTests\obj\Debug\Tree.UnitTests.csproj.CopyComplete
+C:\Users\Joseph\source\repos\321-hw1\Tree.UnitTests\obj\Debug\Tree.UnitTests.dll
+C:\Users\Joseph\source\repos\321-hw1\Tree.UnitTests\obj\Debug\Tree.UnitTests.pdb

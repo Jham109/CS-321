@@ -53,15 +53,27 @@ namespace WinForms
             {
                 input.Add(rand.Next(20000));
             }
-
             return input;
         }
 
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="input"></param>
         /// <returns></returns>
-        public String Task1()
+        public List<int> RemoveDuplicates(List<int> input)
+        {
+            List<int> output = new List<int>();
+
+
+            return output;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public String Task1(List<int> input)
         {
             
             return "";
@@ -71,7 +83,7 @@ namespace WinForms
         /// 
         /// </summary>
         /// <returns></returns>
-        public String Task2()
+        public String Task2(List<int> input)
         {
            
             return "";
@@ -81,7 +93,7 @@ namespace WinForms
         /// 
         /// </summary>
         /// <returns></returns>
-        public String Task3()
+        public String Task3(List<int> input)
         {
            
             return "";

@@ -37,8 +37,8 @@ namespace WinForms
             //load the list with random integers
             integers = LoadList(integers, rand);
 
-            //string Convert = integers[0].ToString();
-            //this.textBox1.Text = Convert;
+            string output1 = Task1(integers);
+            this.textBox1.Text = output1;
         }
 
         /// <summary>
@@ -59,24 +59,19 @@ namespace WinForms
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        public List<int> RemoveDuplicates(List<int> input)
-        {
-            List<int> output = new List<int>();
-
-
-            return output;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <returns></returns>
         public String Task1(List<int> input)
         {
-            
-            return "";
+            HashSet<int> Distinct = new HashSet<int>();
+
+            for (int i = 0; i < input.Count; i++)
+            {
+                Distinct.Add(input[i]);
+            }
+
+
+            return (Distinct.Count().ToString());
+
         }
 
         /// <summary>

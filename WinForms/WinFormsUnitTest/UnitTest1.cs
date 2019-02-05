@@ -11,7 +11,6 @@ namespace WinFormsUnitTest
         //initialize the form object and other variables for testing
         Form1 f = new Form1();
         List<int> integers = new List<int>();
-        List<int> distinct = new List<int>();
         Random rand = new Random();
         
 
@@ -32,18 +31,48 @@ namespace WinFormsUnitTest
         /// 
         /// </summary>
         [TestMethod]
-        public void RemoveDuplicatesTest()
+        public void Task1Test()
         {
             //load the list with integers
             integers = f.LoadList(integers, rand);
 
             //call RemoveDuplicates to remove all of the duplicates in the list
-            distinct = f.RemoveDuplicates(integers);
+            String distinct = f.Task1(integers);
 
             //test to see if the size of the lists are the same(they shouldnt be)
-            Assert.AreNotEqual(distinct.Count, integers.Count);
+            Assert.AreNotEqual(distinct, integers.Count.ToString());
+        }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        [TestMethod]
+        public void Task2Test()
+        {
+            //load the list with integers
+            integers = f.LoadList(integers, rand);
 
+            //call RemoveDuplicates to remove all of the duplicates in the list
+            String distinct = f.Task2(integers);
+
+            //test to see if the size of the lists are the same(they shouldnt be)
+            Assert.AreNotEqual(distinct, integers.Count.ToString());
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [TestMethod]
+        public void Task3Test()
+        {
+            //load the list with integers
+            integers = f.LoadList(integers, rand);
+
+            //call RemoveDuplicates to remove all of the duplicates in the list
+            String distinct = f.Task3(integers);
+
+            //test to see if the size of the lists are the same(they shouldnt be)
+            Assert.AreNotEqual(distinct, integers.Count.ToString());
         }
 
         /// <summary>

@@ -15,7 +15,7 @@ namespace WinFormsUnitTest
         
 
         /// <summary>
-        /// 
+        /// tests to see if the LoadList function loads all of the integers in the list;
         /// </summary>
         [TestMethod]
         public void LoadListTest()
@@ -25,10 +25,12 @@ namespace WinFormsUnitTest
 
             //check if list was successfully loaded
             Assert.IsNotNull(integers[0]);
+            //check to see if list contains 10,000 integers
+            Assert.AreEqual(integers.Count, 10000);
         }
 
         /// <summary>
-        /// 
+        /// tests the Task1 method which removes duplicates by using a HashSet
         /// </summary>
         [TestMethod]
         public void Task1Test()
@@ -44,7 +46,7 @@ namespace WinFormsUnitTest
         }
 
         /// <summary>
-        /// 
+        /// tests the Task2 method which removes duplicates while keeping O(1) storage complexity
         /// </summary>
         [TestMethod]
         public void Task2Test()
@@ -60,7 +62,7 @@ namespace WinFormsUnitTest
         }
 
         /// <summary>
-        /// 
+        /// tests the task3 method which removes duplicates while keeping O(n) time complexity and O(1) storage complexity
         /// </summary>
         [TestMethod]
         public void Task3Test()
@@ -76,7 +78,7 @@ namespace WinFormsUnitTest
         }
 
         /// <summary>
-        /// 
+        /// tests all methods to see if they output the same thing
         /// </summary>
         [TestMethod]
         public void AllTasksAreEqualTest()

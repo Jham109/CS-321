@@ -31,7 +31,18 @@ namespace NotePadApp
 
         private void saveToFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            SaveFileDialog save = new SaveFileDialog();
+            
+            DialogResult result = save.ShowDialog();
+            
+            if (result.ToString() == "OK")
+            {
+                string docPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "WriteLines.txt")))
+                {
+                        outputFile.WriteLine(textBox1.Text);
+                }
+            }
         }
 
         private void loadFromFileToolStripMenuItem_Click(object sender, EventArgs e)

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.329
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotePadApp", "NotePadApp\NotePadApp.csproj", "{BCAF7FF3-F6D8-42DB-A6BF-AF0EE6074DFC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotepadUnitTests", "NotepadUnitTests\NotepadUnitTests.csproj", "{842DB3FE-20A3-48ED-8E41-E94CD6A6BF77}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BCAF7FF3-F6D8-42DB-A6BF-AF0EE6074DFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCAF7FF3-F6D8-42DB-A6BF-AF0EE6074DFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCAF7FF3-F6D8-42DB-A6BF-AF0EE6074DFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCAF7FF3-F6D8-42DB-A6BF-AF0EE6074DFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{842DB3FE-20A3-48ED-8E41-E94CD6A6BF77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{842DB3FE-20A3-48ED-8E41-E94CD6A6BF77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{842DB3FE-20A3-48ED-8E41-E94CD6A6BF77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{842DB3FE-20A3-48ED-8E41-E94CD6A6BF77}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A5CB4A7E-045D-4FF1-BE13-1C0F813B8B24}
+	EndGlobalSection
+EndGlobal

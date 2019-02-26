@@ -9,18 +9,18 @@ namespace SpreadsheetEngine
 {
     public abstract class Cell
     {
-        private readonly int row = 0, col = 0;
+        protected readonly int row = 0, col = 0;
         protected string cellText, cellValue;
 
         // Declare the event
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private int RowIndex
+        public int RowIndex
         {
             get {return row; }
         }
 
-        private int ColumnIndex
+        public int ColumnIndex
         {
             get { return col; }
         }
@@ -45,29 +45,100 @@ namespace SpreadsheetEngine
             }
         }
 
+
         public string Value
         {
             get { return cellValue; }
+
+            internal set
+            {
+                if (value != cellValue)
+                {
+                    cellText = value;
+                    OnPropertyChanged("Value");
+                }
+            }
         }
 
         //OnPropertyChanged method to raise the event
         protected void OnPropertyChanged(string name)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(name));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
+
+    }
+
+    public class Unit : Cell
+    {
+        public Unit(int rowIndex, int colIndex) :base(rowIndex, colIndex)
+        {      
+        }
+
+
     }
 
     public class Spreadsheet
     {
         private int rows, cols;
+        public Cell[,] sheet;
 
-          public Spreadsheet(int rowSize, int colSize)
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public Spreadsheet(int rowSize, int colSize)
         {
+            rows = rowSize;
+            cols = colSize;
 
+            sheet = new Cell[rows, cols];
+
+            for(int r = 0; r < rows; r++)
+            {
+                for(int c = 0; c < cols; c++)
+                {
+                    sheet[r, c] = new Unit(r, c);
+                    sheet[r, c].PropertyChanged += new PropertyChangedEventHandler(CellPropertyChanged);
+                }
+            }
+        }
+
+        public int ColumnCount
+        {
+            get { return cols; }
+        }
+
+        public int RowCount
+        {
+            get { return rows; }
+        }
+
+        //OnPropertyChanged method to raise the event
+        public void CellPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+          if (e.PropertyName == "Text")
+            {
+                if (((Cell)sender).Text[0] != '=')
+                {
+                    ((Cell)sender).Value = ((Cell)sender).Text;
+                }
+            }
+          if(e.PropertyName == "Value")
+            {
+                string algorithm = ((Cell)sender).Text.TrimStart('=');
+                int column = Convert.ToInt16(algorithm[0]) - 'A';
+                int row = Convert.ToInt16(algorithm.Substring(1)) - 1;
+                ((Cell)sender).Value = (GetCell(row, column)).Value;
+            }
+           PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs("Value"));
+        }
+
+        public Cell GetCell(int row, int col)
+        {
+            if( row < 0 || row > rows && col < 0 || col > cols)
+            {
+                return null;
+            }
+
+            return sheet[row, col];
         }
     }
 }

@@ -49,7 +49,7 @@ namespace Spreadsheet_Joseph_Cunningham
             Cell cell = (Cell)sender;
             if (cell != null && e.PropertyName == "Value")
             {
-                dataGridView1.Rows[cell.RowIndex].Cells[cell.ColumnIndex].Value = cell.Value;
+                dataGridView1.Rows[cell.RowIndex].Cells[cell.ColumnIndex].Value = cell.Text;
             }
         }
 

@@ -123,10 +123,13 @@ namespace SpreadsheetEngine
             }
           if(e.PropertyName == "Value")
             {
-                string algorithm = ((Cell)sender).Text.TrimStart('=');
-                int column = Convert.ToInt16(algorithm[0]) - 'A';
-                int row = Convert.ToInt16(algorithm.Substring(1)) - 1;
-                ((Cell)sender).Value = (GetCell(row, column)).Value;
+                if (((Cell)sender).Text[0] == '=')
+                {
+                    string algorithm = ((Cell)sender).Text.TrimStart('=');
+                    int column = Convert.ToInt16(algorithm[0]) - 'A';
+                    int row = Convert.ToInt16(algorithm.Substring(1)) - 1;
+                    ((Cell)sender).Value = (GetCell(row, column)).Value;
+                }
             }
            PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs("Value"));
         }

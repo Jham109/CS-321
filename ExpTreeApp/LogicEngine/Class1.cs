@@ -13,12 +13,32 @@ namespace Cpts321
 
         }
 
-        void SetVariable(string variableName, double variableValue)
+        public void SetVariable(string variableName, double variableValue)
         {
 
-        }        double Evaluate()
+        }        public double Evaluate()
         {
             return 0;
         }
+    }
+
+    public class Node
+    {
+
+    }
+
+    public class NumNode : Node
+    {
+
+    }
+
+    public class VarNode : Node
+    {
+
+    }
+
+    public class OpNode : Node
+    {
+
     }
 }

@@ -8,16 +8,56 @@ namespace Cpts321
 {
     public class ExpressionTree
     {
-        private Node root;
+        private Stack<Node> Tree = new Stack<Node>();
         private Dictionary<string, double> variables = new Dictionary<string, double>();
         private List<string> operators = new List<string>();
 
 
         public ExpressionTree(string expression)
         {
-            List<string> parsedExpression = toList(expression);
-            string postFixExpression = ConvertPostfix(parsedExpression);
-            Console.WriteLine(postFixExpression);
+            List<string> postFixExpression = ConvertPostfix(toList(expression));
+            List<string> integers = loadIntList();
+            double number; 
+
+            foreach(string op in postFixExpression)
+            {
+                // a constant or a variable
+                if(!operators.Contains(op))
+                {
+                    // a constant
+                    if (double.TryParse(op, out number))
+                    {
+                        NumNode node = new NumNode();
+                        node.Value = number;
+                        Tree.Push(node);
+                    }
+                    // a variable
+                    else
+                    {
+                        VarNode node = new VarNode();
+                        variables.Add(op, 0);
+                        node.Name = op;
+                        Tree.Push(node);
+                    }
+                    
+                }
+                // its an operator
+                else
+                {
+                    OpNode node = new OpNode(op);
+
+                    if (Tree.Count != 0)
+                    {
+                        node.Right = Tree.Pop();
+                        node.Left = Tree.Pop();
+                    }
+                    else
+                    {
+                        Console.WriteLine("The expression is invalid");
+                    }
+                    Tree.Push(node);
+                }
+            }
 
         }
 
@@ -27,16 +67,26 @@ namespace Cpts321
         }        public double Evaluate()
         {
             return 0;
-        }        private string ConvertPostfix(List<string> parsed)
+        }        private List<string> loadIntList()
         {
-            string postFix = null;
+            List<string> integers = new List<string>();
+
+            for(int i =0; i<10; i++)
+            {
+                integers.Add(i.ToString());
+            }
+
+            return integers;
+        }        private List<string> ConvertPostfix(List<string> parsed)
+        {
+            List<string> postFix = new List<string>(); 
             Stack<string> vars = new Stack<string>();
 
             foreach (string variable in parsed)
             {
                 if(!operators.Contains(variable))
                 {
-                    postFix += variable;
+                    postFix.Add(variable);
                 }
                 else
                 {
@@ -48,7 +98,7 @@ namespace Cpts321
                     {
                         while (Priority(vars.Peek()) >= Priority(variable) && Priority(variable) != -1)
                         {
-                            postFix += vars.Pop();
+                            postFix.Add(vars.Pop());
                             if (vars.Count == 0)
                             {
                                 break;
@@ -61,7 +111,7 @@ namespace Cpts321
 
             while(vars.Count != 0)
             {
-                postFix += vars.Pop();
+                postFix.Add(vars.Pop());
             }
 
             return postFix;
@@ -115,16 +165,7 @@ namespace Cpts321
 
     public class NumNode : Node
     {
-        double val = 0;
-        public NumNode(double num)
-        {
-            val = Convert.ToInt32(num);
-        }
-
-        public double Value
-        {
-            get{ return val; }
-        }
+        public double Value { get; set; }
     }
 
     public class VarNode : Node
@@ -133,18 +174,17 @@ namespace Cpts321
     }
 
     public class OpNode : Node
-    {
-        public Node left;
-        public Node right;
-        public char value;
-
-        public OpNode(char op)
+    { 
+        public OpNode(string op)
         {
             value = op;
-            left = null;
-            right = null;
+            Left = null;
+            Right = null;
         }
 
-        
+        public string value { get; set; }
+
+        public Node Left { get; set; }
+        public Node Right { get; set; }
     }
 }

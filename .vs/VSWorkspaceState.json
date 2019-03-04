@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\bst",
-    "\\bst\\Properties"
+    "\\bst\\Properties",
+    "\\Tree.UnitTests"
   ],
-  "SelectedNode": "\\bst\\Program.cs",
+  "SelectedNode": "\\Tree.UnitTests\\UnitTest1.cs",
   "PreviewInSolutionExplorer": true
 }

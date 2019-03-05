@@ -60,6 +60,7 @@ namespace Cpts321
                     else
                     {
                         Console.WriteLine("The expression is invalid");
+                        break;
                     }
                     Tree.Push(node);
                 }
@@ -257,7 +258,6 @@ namespace Cpts321
     {
         public string Name { get; set; }
     }
-
 
     /// <summary>
     /// operator node class that stores the operators used in the expression string 

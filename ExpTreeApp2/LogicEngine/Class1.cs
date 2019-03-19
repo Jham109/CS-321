@@ -23,51 +23,48 @@ namespace Cpts321
         {
             List<string> postFixExpression = ConvertPostfix(toList(expression));
             List<string> integers = loadIntList();
-            //double number;
-            foreach (string thing in postFixExpression)
+            double number;
+           
+            foreach (string op in postFixExpression)
             {
-                Console.Write(thing);
+                // a constant or a variable
+                if (!operators.Contains(op))
+                {
+                    // a constant
+                    if (double.TryParse(op, out number))
+                    {
+                        NumNode node = new NumNode();
+                        node.Value = number;
+                        Tree.Push(node);
+                    }
+                    // a variable
+                    else
+                    {
+                        VarNode node = new VarNode();
+                        variables.Add(op, 0);
+                        node.Name = op;
+                        Tree.Push(node);
+                    }
+
+                }
+                // its an operator
+                else
+                {
+                    OpNode node = new OpNode(op);
+
+                    if (Tree.Count != 0)
+                    {
+                        node.Right = Tree.Pop();
+                        node.Left = Tree.Pop();
+                    }
+                    else
+                    {
+                        Console.WriteLine("The expression is invalid");
+                        break;
+                    }
+                    Tree.Push(node);
+                }
             }
-            //foreach (string op in postFixExpression)
-            //{
-            //    // a constant or a variable
-            //    if (!operators.Contains(op))
-            //    {
-            //        // a constant
-            //        if (double.TryParse(op, out number))
-            //        {
-            //            NumNode node = new NumNode();
-            //            node.Value = number;
-            //            Tree.Push(node);
-            //        }
-            //        // a variable
-            //        else
-            //        {
-            //            VarNode node = new VarNode();
-            //            variables.Add(op, 0);
-            //            node.Name = op;
-            //            Tree.Push(node);
-            //        }
-
-            //    }
-            //    // its an operator
-            //    else
-            //    {
-            //        OpNode node = new OpNode(op);
-
-            //        if (Tree.Count != 0)
-            //        {
-            //            node.Right = Tree.Pop();
-            //            node.Left = Tree.Pop();
-            //        }
-            //        else
-            //        {
-            //            Console.WriteLine("The expression is invalid");
-            //            break;
-            //        }
-            //        Tree.Push(node);
-            //    }
-            //}
 
         }
 

@@ -13,37 +13,43 @@ namespace ExpTreeApp2
         static void Main(string[] args)
         {
             int input = 1;
-            string expression = "(a+b)*c+(d-a)";
+            string expression = "(a+b)*c";
             ExpressionTree Tree = new ExpressionTree(expression);
 
             // main loop of the program 
             while (input != 4)
             {
+                
                 Console.Write("Current Expression: ");
                 Console.WriteLine(expression);
                 menu();
                 Console.Write("Enter a command: ");
-                input = Convert.ToInt32(Console.ReadLine());
+                string command = Console.ReadLine();
 
-                switch (input)
+                if (command == "1" || command == "2" || command == "3" || command == "4")
                 {
-                    case 1: // Creates a new expression tree with a new expression
-                        Console.Write("Enter a new Expression: ");
-                        expression = Console.ReadLine();
-                        Tree = new ExpressionTree(expression);
-                        break;
+                    input = Convert.ToInt32(command);
 
-                    case 2: // assign values and names to variables in the expression
-                        Console.Write("Enter a variable name: ");
-                        string name = Console.ReadLine();
-                        Console.Write("Enter a value: ");
-                        int value = Convert.ToInt32(Console.ReadLine());
-                        Tree.SetVariable(name, value);
-                        break;
+                    switch (input)
+                    {
+                        case 1: // Creates a new expression tree with a new expression
+                            Console.Write("Enter a new Expression: ");
+                            expression = Console.ReadLine();
+                            Tree = new ExpressionTree(expression);
+                            break;
 
-                    case 3: // evaluate the current expression in the tree
-                        Console.WriteLine(Tree.Evaluate());
-                        break;
+                        case 2: // assign values and names to variables in the expression
+                            Console.Write("Enter a variable name: ");
+                            string name = Console.ReadLine();
+                            Console.Write("Enter a value: ");
+                            int value = Convert.ToInt32(Console.ReadLine());
+                            Tree.SetVariable(name, value);
+                            break;
+
+                        case 3: // evaluate the current expression in the tree
+                            Console.WriteLine(Tree.Evaluate());
+                            break;
+                    }
                 }
             }
 

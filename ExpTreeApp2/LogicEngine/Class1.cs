@@ -23,48 +23,51 @@ namespace Cpts321
         {
             List<string> postFixExpression = ConvertPostfix(toList(expression));
             List<string> integers = loadIntList();
-            double number;
-
-            foreach (string op in postFixExpression)
+            //double number;
+            foreach (string thing in postFixExpression)
             {
-                // a constant or a variable
-                if (!operators.Contains(op))
-                {
-                    // a constant
-                    if (double.TryParse(op, out number))
-                    {
-                        NumNode node = new NumNode();
-                        node.Value = number;
-                        Tree.Push(node);
-                    }
-                    // a variable
-                    else
-                    {
-                        VarNode node = new VarNode();
-                        variables.Add(op, 0);
-                        node.Name = op;
-                        Tree.Push(node);
-                    }
-
-                }
-                // its an operator
-                else
-                {
-                    OpNode node = new OpNode(op);
-
-                    if (Tree.Count != 0)
-                    {
-                        node.Right = Tree.Pop();
-                        node.Left = Tree.Pop();
-                    }
-                    else
-                    {
-                        Console.WriteLine("The expression is invalid");
-                        break;
-                    }
-                    Tree.Push(node);
-                }
+                Console.Write(thing);
             }
+            //foreach (string op in postFixExpression)
+            //{
+            //    // a constant or a variable
+            //    if (!operators.Contains(op))
+            //    {
+            //        // a constant
+            //        if (double.TryParse(op, out number))
+            //        {
+            //            NumNode node = new NumNode();
+            //            node.Value = number;
+            //            Tree.Push(node);
+            //        }
+            //        // a variable
+            //        else
+            //        {
+            //            VarNode node = new VarNode();
+            //            variables.Add(op, 0);
+            //            node.Name = op;
+            //            Tree.Push(node);
+            //        }
+
+            //    }
+            //    // its an operator
+            //    else
+            //    {
+            //        OpNode node = new OpNode(op);
+
+            //        if (Tree.Count != 0)
+            //        {
+            //            node.Right = Tree.Pop();
+            //            node.Left = Tree.Pop();
+            //        }
+            //        else
+            //        {
+            //            Console.WriteLine("The expression is invalid");
+            //            break;
+            //        }
+            //        Tree.Push(node);
+            //    }
+            //}
 
         }
 
@@ -161,7 +164,19 @@ namespace Cpts321
                 {
                     postFix.Add(variable);
                 }
-
+                else if(variable == "(")
+                {
+                    vars.Push(variable);
+                }
+                else if(variable == ")")
+                {
+                    string popped = vars.Pop();
+                    while(popped != "(")
+                    {
+                        postFix.Add(popped);
+                        popped = vars.Pop();
+                    }
+                }
                 // its an operator
                 else
                 {
@@ -173,7 +188,7 @@ namespace Cpts321
                     else
                     {
                         // if the priority is higher than the operator on the stack then pop and push current operator onto stack
-                        while (Priority(vars.Peek()) >= Priority(variable) && Priority(variable) != -1)
+                        while (Priority(vars.Peek()) >= Priority(variable))
                         {
                             postFix.Add(vars.Pop());
                             if (vars.Count == 0)
@@ -207,7 +222,7 @@ namespace Cpts321
             }
             else
             {
-                return -1;
+                return 0;
             }
         }
 
@@ -224,12 +239,20 @@ namespace Cpts321
             foreach (char var in expression)
             {
 
-                if (var == '+' || var == '-' || var == '*' || var == '/')
+                if (var == '+' || var == '-' || var == '*' || var == '/' || var == '(' || var == ')')
                 {
-                    parsedExpression.Add(variable);
-                    parsedExpression.Add(var.ToString());
                     operators.Add(var.ToString());
-                    variable = null;
+
+                    if (variable != null)
+                    {
+                        parsedExpression.Add(variable);
+                        parsedExpression.Add(var.ToString());
+                        variable = null;
+                    }
+                    else
+                    {
+                        parsedExpression.Add(var.ToString());
+                    }
                 }
                 else
                 {

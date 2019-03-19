@@ -13,7 +13,7 @@ namespace ExpTreeApp2
         static void Main(string[] args)
         {
             int input = 1;
-            string expression = "A1+B1+C1";
+            string expression = "(a+b)*c+(d-a)";
             ExpressionTree Tree = new ExpressionTree(expression);
 
             // main loop of the program 

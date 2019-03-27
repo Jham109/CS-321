@@ -54,7 +54,7 @@ namespace SpreadsheetEngine
             {
                 if (value != cellValue)
                 {
-                    cellText = value;
+                    cellValue = value;
                     OnPropertyChanged("Value");
                 }
             }
@@ -116,10 +116,8 @@ namespace SpreadsheetEngine
         {
           if (e.PropertyName == "Text")
             {
-                if (((Cell)sender).Text[0] != '=')
-                {
-                    ((Cell)sender).Value = ((Cell)sender).Text;
-                }
+                ((Cell)sender).Value = ((Cell)sender).Text;
+
             }
           if(e.PropertyName == "Value")
             {

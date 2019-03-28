@@ -87,6 +87,7 @@ namespace Spreadsheet_Joseph_Cunningham
 
         }
 
+        // enters this when the Demp button is clicked
         private void button1_Click(object sender, EventArgs e)
         {
             Random rand = new Random();

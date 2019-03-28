@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using ExpressionEvaluator;
 
 namespace SpreadsheetEngine
 {
@@ -80,6 +81,7 @@ namespace SpreadsheetEngine
     public class Spreadsheet
     {
         private int rows, cols;
+        public ExpressionTree Tree; 
         public Cell[,] sheet;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -124,9 +126,27 @@ namespace SpreadsheetEngine
                 if (((Cell)sender).Text[0] == '=')
                 {
                     string algorithm = ((Cell)sender).Text.TrimStart('=');
-                    int column = Convert.ToInt16(algorithm[0]) - 'A';
-                    int row = Convert.ToInt16(algorithm.Substring(1)) - 1;
-                    ((Cell)sender).Value = (GetCell(row, column)).Value;
+                    Tree = new ExpressionTree(algorithm);
+
+                    //get list of variables and get values from the corresponding cells
+                    List<string> variables = Tree.GetVariables();
+                    foreach(string cell in variables)
+                    {
+                        int column = Convert.ToInt16(cell[0]) - 'A';
+                        int row = Convert.ToInt16(cell.Substring(1)) - 1;
+                        double value;
+                        if (Double.TryParse(GetCell(row, column).Value, out value))
+                        {
+                            Tree.SetVariable(cell, value);
+                        }
+                        else
+                        {
+                            Tree.SetVariable(cell, 0);
+                        }
+                        
+                    }
+
+                    ((Cell)sender).Value = Tree.Evaluate().ToString();
                 }
             }
            PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs("Value"));

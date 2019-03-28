@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{176DE40D-9563-43B0-9076-B4C9580DCEF2}</ProjectGuid>
+    <ProjectGuid>{3D053558-EF3C-4D0E-BF09-9FF1670A8B98}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SpreadsheetEngine</RootNamespace>
-    <AssemblyName>SpreadsheetEngine</AssemblyName>
+    <RootNamespace>ExpressionEvaluator</RootNamespace>
+    <AssemblyName>ExpressionEvaluator</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -41,14 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Spreadsheet.cs" />
+    <Compile Include="ExpTree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ExpressionEvaluator\ExpressionEvaluator.csproj">
-      <Project>{3d053558-ef3c-4d0e-bf09-9ff1670a8b98}</Project>
-      <Name>ExpressionEvaluator</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

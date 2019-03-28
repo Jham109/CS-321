@@ -12,6 +12,8 @@ namespace SpreadsheetEngine
     {
         protected readonly int row = 0, col = 0;
         protected string cellText, cellValue;
+        private HashSet<Cell> dependents = new HashSet<Cell>();
+        public List<Cell> variables = new List<Cell>();
 
         // Declare the event
         public event PropertyChangedEventHandler PropertyChanged;
@@ -46,7 +48,6 @@ namespace SpreadsheetEngine
             }
         }
 
-
         public string Value
         {
             get { return cellValue; }
@@ -56,9 +57,28 @@ namespace SpreadsheetEngine
                 if (value != cellValue)
                 {
                     cellValue = value;
+
+                    //update each cell that is dependent on this cell
+                    foreach(Cell cell in dependents)
+                    {
+                        if(cell.variables.Contains(this))
+                        {
+                            cell.OnPropertyChanged("Value");
+                        }
+                        //if no longer a variable in the cell's expression
+                        else
+                        {
+                            dependents.Remove(cell);
+                        }
+                    }
                     OnPropertyChanged("Value");
                 }
             }
+        }
+
+        public void AddDependent(Cell cell)
+        {
+            dependents.Add(cell);
         }
 
         //OnPropertyChanged method to raise the event
@@ -126,6 +146,7 @@ namespace SpreadsheetEngine
                 if (((Cell)sender).Text[0] == '=')
                 {
                     string algorithm = ((Cell)sender).Text.TrimStart('=');
+                    ((Cell)sender).variables = new List<Cell>();
                     Tree = new ExpressionTree(algorithm);
 
                     //get list of variables and get values from the corresponding cells
@@ -135,6 +156,12 @@ namespace SpreadsheetEngine
                         int column = Convert.ToInt16(cell[0]) - 'A';
                         int row = Convert.ToInt16(cell.Substring(1)) - 1;
                         double value;
+
+                        //add itself to the dependent list in the cells in it's expression
+                        GetCell(row, column).AddDependent(((Cell)sender));
+                        //add the cells in it's expression to it's variable list
+                        ((Cell)sender).variables.Add(GetCell(row, column));
+
                         if (Double.TryParse(GetCell(row, column).Value, out value))
                         {
                             Tree.SetVariable(cell, value);
@@ -143,9 +170,9 @@ namespace SpreadsheetEngine
                         {
                             Tree.SetVariable(cell, 0);
                         }
-                        
                     }
 
+                    //evaluate the tree and set it as the cell's value
                     ((Cell)sender).Value = Tree.Evaluate().ToString();
                 }
             }

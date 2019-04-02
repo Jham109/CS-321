@@ -113,11 +113,19 @@ namespace SpreadsheetEngine
 
     }
 
+
+    /// <summary>
+    /// This class represents a 2d array of cells and handles all of the actions of the cells
+    /// </summary>
     public class Spreadsheet
     {
         private int rows, cols;
+        private Stack<UndoRedoCollection> undos = new Stack<UndoRedoCollection>();
+        private Stack<UndoRedoCollection> redos = new Stack<UndoRedoCollection>();
         public ExpressionTree Tree; 
         public Cell[,] sheet;
+        
+        
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -210,5 +218,56 @@ namespace SpreadsheetEngine
 
             return sheet[row, col];
         }
+
+        // next region deals with undo/redo stack actions
+        #region 
+
+        //The description of the next available undo.
+        public string UndoDescription
+        {
+            get
+            {
+                if (undos.Count != 0)
+                {
+                    return undos.Peek().GetDescription;
+                }
+                return "";
+            }
+        }
+
+        //The description of the next available redo.
+        public string RedoDescription
+        {
+            get
+            {
+                if (redos.Count != 0)
+                {
+                    return redos.Peek().GetDescription;
+                }
+                return "";
+            }
+        }
+
+        //pushes a new undo command on to the undo stack
+        public void AddUndo(UndoRedoCollection newUndo)
+        {
+            undos.Push(newUndo);
+            redos.Clear();
+        }
+
+        //executes an undo command
+        public void Undo(Spreadsheet sheet)
+        {
+            UndoRedoCollection undo = undos.Pop();
+            redos.Push(undo.Execute(sheet));
+        }
+
+        //executes a redo command
+        public void Redo(Spreadsheet sheet)
+        {
+            UndoRedoCollection redo = redos.Pop();
+            undos.Push(redo.Execute(sheet));
+        }
+        #endregion
     }
 }

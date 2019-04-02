@@ -73,6 +73,7 @@ namespace Spreadsheet_Joseph_Cunningham
             int column = e.ColumnIndex;
             string text = "";
             Cell cell = Sheet.GetCell(row, column);
+            List<UndoRedoCmd> undos = new List<UndoRedoCmd>();
 
             try
             {
@@ -83,7 +84,13 @@ namespace Spreadsheet_Joseph_Cunningham
                 text = "";
             }
             cell.Text = text;
+
+            undos.Add(new UndoText(cell.Text, cell.RowIndex, cell.ColumnIndex));
+            Sheet.AddUndo(new UndoRedoCollection(undos.ToArray(), "Text Change"));
+            
             dataGridView1.Rows[cell.RowIndex].Cells[cell.ColumnIndex].Value = cell.Value;
+
+            UpdateDOMenu();
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -117,6 +124,7 @@ namespace Spreadsheet_Joseph_Cunningham
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
             ColorDialog dialog = new ColorDialog();
+            List<UndoRedoCmd> undos = new List<UndoRedoCmd>();
 
             if(dialog.ShowDialog() == DialogResult.OK)
             {
@@ -131,7 +139,64 @@ namespace Spreadsheet_Joseph_Cunningham
 
                     //set the color in the spreadsheet
                     cell.BGColor = (uint)chosenColor;
-                }         
+
+                    undos.Add(new UndoBGColor(cell.BGColor, cell.RowIndex, cell.ColumnIndex));
+                }
+
+                Sheet.AddUndo(new UndoRedoCollection(undos.ToArray(), "Background Color Change"));
+                UpdateDOMenu();
+            }
+        }
+
+        // the Undo button
+        private void undoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Sheet.Undo(Sheet);
+            UpdateDOMenu();
+        }
+
+        // the Redo button
+        private void redoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Sheet.Undo(Sheet);
+            UpdateDOMenu();
+        }
+
+        /// <summary>
+        /// updates the menu with the new descriptions and also will disable/renable them
+        /// </summary>
+        private void UpdateDOMenu()
+        {
+            ToolStripMenuItem group = menuStrip1.Items[1] as ToolStripMenuItem;
+
+            foreach (ToolStripItem item in group.DropDownItems)
+            {
+                if (item.Text.Contains("Undo"))
+                {
+                    if (Sheet.UndoDescription == "")
+                    {
+                        item.Enabled = false;
+                    }
+                    else
+                    {
+                        item.Enabled = true;
+                    }
+
+                    item.Text = "Undo " + Sheet.UndoDescription;
+                }
+                else if (item.Text.Contains("Redo"))
+                {
+                    if (Sheet.RedoDescription == "")
+                    {
+                        item.Enabled = false;
+                    }
+                    else
+                    {
+                        item.Enabled = true;
+                    }
+                    
+                    item.Text = "Redo " + Sheet.RedoDescription;
+                }
             }
         }
     }

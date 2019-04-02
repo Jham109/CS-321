@@ -158,7 +158,7 @@ namespace Spreadsheet_Joseph_Cunningham
         // the Redo button
         private void redoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Sheet.Undo(Sheet);
+            Sheet.Redo(Sheet);
             UpdateDOMenu();
         }
 

@@ -53,6 +53,10 @@ namespace Spreadsheet_Joseph_Cunningham
             {
                 dataGridView1.Rows[cell.RowIndex].Cells[cell.ColumnIndex].Value = cell.Value;
             }
+            else if (e.PropertyName == "Color")
+            {
+                dataGridView1.Rows[cell.RowIndex].Cells[cell.ColumnIndex].Style.BackColor = Color.FromArgb((int)cell.BGColor);
+            }
         }
 
         //Enters this when a cell begins to edit
@@ -106,6 +110,28 @@ namespace Spreadsheet_Joseph_Cunningham
                 Cell randomCell = Sheet.GetCell(randomRow, randomCol);
                 randomCell.Text = "Hello";
                 Sheet.sheet[randomRow, randomCol] = randomCell;
+            }
+        }
+
+        // Enters this when User wants clicks the "Change Background Color" menu option
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            ColorDialog dialog = new ColorDialog();
+
+            if(dialog.ShowDialog() == DialogResult.OK)
+            {
+                //...Get the chosen color as an int.
+                int chosenColor = dialog.Color.ToArgb();
+
+                // For each cell selected...
+                foreach (DataGridViewCell dgCell in dataGridView1.SelectedCells)
+                {
+                    //get the cell from the spreadsheet
+                    Cell cell = Sheet.GetCell(dgCell.RowIndex, dgCell.ColumnIndex);
+
+                    //set the color in the spreadsheet
+                    cell.BGColor = (uint)chosenColor;
+                }         
             }
         }
     }

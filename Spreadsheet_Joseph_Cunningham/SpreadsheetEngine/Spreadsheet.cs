@@ -14,6 +14,21 @@ namespace SpreadsheetEngine
         protected string cellText, cellValue;
         private HashSet<Cell> dependents = new HashSet<Cell>();
         public List<Cell> variables = new List<Cell>();
+        private uint color = 0xFFFFFFFF;
+        public uint BGColor
+        {
+            get
+            {
+                return color;
+            }
+            set {
+                if (value != color)
+                {
+                    color = value;
+                    OnPropertyChanged("Color");
+                }            
+            }
+        }  
 
         // Declare the event
         public event PropertyChangedEventHandler PropertyChanged;
@@ -143,38 +158,45 @@ namespace SpreadsheetEngine
             }
           if(e.PropertyName == "Value")
             {
-                if (((Cell)sender).Text[0] == '=')
+                if (((Cell)sender).Text != "")
                 {
-                    string algorithm = ((Cell)sender).Text.TrimStart('=');
-                    ((Cell)sender).variables = new List<Cell>();
-                    Tree = new ExpressionTree(algorithm);
-
-                    //get list of variables and get values from the corresponding cells
-                    List<string> variables = Tree.GetVariables();
-                    foreach(string cell in variables)
+                    if (((Cell)sender).Text[0] == '=')
                     {
-                        int column = Convert.ToInt16(cell[0]) - 'A';
-                        int row = Convert.ToInt16(cell.Substring(1)) - 1;
-                        double value;
+                        string algorithm = ((Cell)sender).Text.TrimStart('=');
+                        ((Cell)sender).variables = new List<Cell>();
+                        Tree = new ExpressionTree(algorithm);
 
-                        //add itself to the dependent list in the cells in it's expression
-                        GetCell(row, column).AddDependent(((Cell)sender));
-                        //add the cells in it's expression to it's variable list
-                        ((Cell)sender).variables.Add(GetCell(row, column));
+                        //get list of variables and get values from the corresponding cells
+                        List<string> variables = Tree.GetVariables();
+                        foreach (string cell in variables)
+                        {
+                            int column = Convert.ToInt16(cell[0]) - 'A';
+                            int row = Convert.ToInt16(cell.Substring(1)) - 1;
+                            double value;
 
-                        if (Double.TryParse(GetCell(row, column).Value, out value))
-                        {
-                            Tree.SetVariable(cell, value);
+                            //add itself to the dependent list in the cells in it's expression
+                            GetCell(row, column).AddDependent(((Cell)sender));
+                            //add the cells in it's expression to it's variable list
+                            ((Cell)sender).variables.Add(GetCell(row, column));
+
+                            if (Double.TryParse(GetCell(row, column).Value, out value))
+                            {
+                                Tree.SetVariable(cell, value);
+                            }
+                            else
+                            {
+                                Tree.SetVariable(cell, 0);
+                            }
                         }
-                        else
-                        {
-                            Tree.SetVariable(cell, 0);
-                        }
+
+                        //evaluate the tree and set it as the cell's value
+                        ((Cell)sender).Value = Tree.Evaluate().ToString();
                     }
-
-                    //evaluate the tree and set it as the cell's value
-                    ((Cell)sender).Value = Tree.Evaluate().ToString();
                 }
+            }
+          if(e.PropertyName == "Color")
+            {
+                PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs("Color"));
             }
            PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs("Value"));
         }

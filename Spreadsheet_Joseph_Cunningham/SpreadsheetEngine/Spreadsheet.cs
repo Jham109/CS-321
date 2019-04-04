@@ -166,7 +166,7 @@ namespace SpreadsheetEngine
             }
           if(e.PropertyName == "Value")
             {
-                if (((Cell)sender).Text != "")
+                if (((Cell)sender).Text != "" && ((Cell)sender).Text != null)
                 {
                     if (((Cell)sender).Text[0] == '=')
                     {
@@ -258,8 +258,10 @@ namespace SpreadsheetEngine
         //executes an undo command
         public void Undo(Spreadsheet sheet)
         {
+            
             UndoRedoCollection undo = undos.Pop();
             redos.Push(undo.Execute(sheet));
+            //refresh(sheet);
         }
 
         //executes a redo command

@@ -83,9 +83,11 @@ namespace Spreadsheet_Joseph_Cunningham
             {
                 text = "";
             }
+
+            string oldText = cell.Text;
             cell.Text = text;
 
-            undos.Add(new UndoText(cell.Text, cell.RowIndex, cell.ColumnIndex));
+            undos.Add(new UndoText(cell.Text, oldText, cell.RowIndex, cell.ColumnIndex));
             Sheet.AddUndo(new UndoRedoCollection(undos.ToArray(), "Text Change"));
             
             dataGridView1.Rows[cell.RowIndex].Cells[cell.ColumnIndex].Value = cell.Value;
@@ -137,10 +139,13 @@ namespace Spreadsheet_Joseph_Cunningham
                     //get the cell from the spreadsheet
                     Cell cell = Sheet.GetCell(dgCell.RowIndex, dgCell.ColumnIndex);
 
+                    //save the old color
+                    uint oldColor = cell.BGColor;
+
                     //set the color in the spreadsheet
                     cell.BGColor = (uint)chosenColor;
 
-                    undos.Add(new UndoBGColor(cell.BGColor, cell.RowIndex, cell.ColumnIndex));
+                    undos.Add(new UndoBGColor(cell.BGColor, oldColor, cell.RowIndex, cell.ColumnIndex));
                 }
 
                 Sheet.AddUndo(new UndoRedoCollection(undos.ToArray(), "Background Color Change"));
@@ -152,6 +157,7 @@ namespace Spreadsheet_Joseph_Cunningham
         private void undoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Sheet.Undo(Sheet);
+
             UpdateDOMenu();
         }
 

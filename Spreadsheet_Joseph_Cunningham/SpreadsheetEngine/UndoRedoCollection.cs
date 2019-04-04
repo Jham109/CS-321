@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -51,7 +52,6 @@ namespace SpreadsheetEngine
     public interface UndoRedoCmd
     {
         UndoRedoCmd Execute(Spreadsheet sheet);
-       
     }
 
     /// <summary>
@@ -59,12 +59,14 @@ namespace SpreadsheetEngine
     /// </summary>
     public class UndoBGColor : UndoRedoCmd
     {
-        private uint cellBGcolor;
+        private uint cellBGcolor, priorColor;
         private int cellRow, cellColumn;
 
-        public UndoBGColor(uint color, int row, int column)
+
+        public UndoBGColor(uint color, uint lastColor, int row, int column)
         {
             cellBGcolor = color;
+            priorColor = lastColor;
             cellRow = row;
             cellColumn = column;
         }
@@ -73,9 +75,9 @@ namespace SpreadsheetEngine
         {
             Cell cell = sheet.GetCell(cellRow, cellColumn);
             uint oldColor = cell.BGColor;
-            cell.BGColor = cellBGcolor;
+            cell.BGColor = priorColor;
 
-            return new UndoBGColor(oldColor, cellRow, cellColumn);
+            return new UndoBGColor(oldColor, cellBGcolor, cellRow, cellColumn);
         }
     }
 
@@ -84,12 +86,13 @@ namespace SpreadsheetEngine
     /// </summary>
     public class UndoText : UndoRedoCmd
     {
-        private string cellText;
+        private string cellText, priorText;
         private int cellRow, cellColumn;
 
-        public UndoText(string text, int row, int column)
+        public UndoText(string text, string lastText, int row, int column)
         {
             cellText = text;
+            priorText = lastText;
             cellRow = row;
             cellColumn = column;
         }
@@ -98,11 +101,9 @@ namespace SpreadsheetEngine
         {
             Cell cell = sheet.GetCell(cellRow, cellColumn);
             string oldText = cell.Text;
-            cell.Text = cellText;
+            cell.Text = priorText;
 
-            return new UndoText(oldText, cellRow, cellColumn);
+            return new UndoText(oldText, cellText, cellRow, cellColumn);
         }
     }
-        
-
 }

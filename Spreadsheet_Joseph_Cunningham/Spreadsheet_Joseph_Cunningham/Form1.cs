@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -204,6 +205,33 @@ namespace Spreadsheet_Joseph_Cunningham
                     item.Text = "Redo " + Sheet.RedoDescription;
                 }
             }
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "XML files (*.xml)|*.xml";
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                Stream stream = new FileStream(saveFileDialog.FileName, FileMode.Create, FileAccess.Write);
+                Sheet.Save(stream);
+                stream.Dispose();
+            }
+
+        }
+
+        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "XML files (*.xml)|*.xml";
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                Stream stream = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read);
+                Sheet.Load(stream);
+                stream.Dispose();
+            }
+
+            UpdateDOMenu();
         }
     }
 }

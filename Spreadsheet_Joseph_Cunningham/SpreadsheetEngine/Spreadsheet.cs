@@ -5,6 +5,9 @@ using System.Text;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using ExpressionEvaluator;
+using System.IO;
+using System.Xml.Linq;
+using System.Xml;
 
 namespace SpreadsheetEngine
 {
@@ -209,6 +212,12 @@ namespace SpreadsheetEngine
            PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs("Value"));
         }
 
+        /// <summary>
+        /// Returns a cell given the row index and the column index
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="col"></param>
+        /// <returns></returns>
         public Cell GetCell(int row, int col)
         {
             if( row < 0 || row > rows && col < 0 || col > cols)
@@ -217,6 +226,159 @@ namespace SpreadsheetEngine
             }
 
             return sheet[row, col];
+        }
+
+        // returns the corresponding cell in the spreadsheet given the name of the cell
+        public Cell GetCell(string name)
+        {
+            Int16 number;
+            Cell cell;
+
+            // Return null if the name doesnt start with a letter
+            if (!Char.IsLetter(name[0]))
+            {  
+                return null;
+            }
+
+            //Return null if the the rest of the name isnt a number
+            if (!Int16.TryParse(name.Substring(1), out number))
+            {
+                return null;
+            }
+
+
+            try
+            {
+                cell = GetCell(number - 1, name[0] - 'A');
+            }
+            // If the given location does not exist in the spreadsheet, return null.
+            catch (Exception)
+            {
+                
+                return null;
+            }
+
+            return cell;
+        }
+
+        //clears all of the data in the Cells array
+        private void clear()
+        {
+            for (int r = 0; r < rows; r++)
+            {
+                for (int c = 0; c < cols; c++)
+                {
+                    sheet[r, c].Text = null;
+                }
+            }
+
+            //clear out the undos and redos stack
+            undos.Clear();
+            redos.Clear();
+        }
+
+        // Load a XML file into the spreadsheet
+        public bool Load(Stream stream)
+        {
+            XDocument file = null;
+
+            try
+            {
+                file = XDocument.Load(stream);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            if (file == null)
+            {
+                return false;
+            }
+
+            // Clear the sheet
+            this.clear();
+            
+            XElement root = file.Root;
+
+           
+                if ("Spreadsheet" != root.Name)
+                {
+                    return false;
+                }
+
+                foreach (XElement child in root.Elements("Cell"))
+                {
+                    Cell cell = GetCell(child.Attribute("Name").Value);
+                    var textElement = child.Element("Text");
+                    var bgElement = child.Element("BGColor");
+
+                    // Only edit existing cells.
+                    if (cell == null) { continue; }
+
+                    // Load and set text.
+                    if (textElement != null)
+                    {
+                        cell.Text = textElement.Value;
+                    }
+
+                    //Load and set background color.        
+                    if (bgElement != null)
+                    {
+                        cell.BGColor = uint.Parse(bgElement.Value);
+                    }
+                }
+            
+            return true;
+        }
+
+        //Saves spreadsheet data to an xml file
+        public bool Save(Stream stream)
+        {
+            List<Cell> cellsToWrite = new List<Cell>();
+            Cell cell1;
+
+            // Create the XmlWriter to write to the stream
+            XmlWriter writer = XmlWriter.Create(stream);
+            if (writer == null)
+            {
+                return false;
+            }
+
+            writer.WriteStartElement("Spreadsheet");
+
+            for (int r = 0; r < rows; r++)
+            {
+                for (int c = 0; c < cols; c++)
+                {
+                    cell1 = GetCell(r, c);
+
+                    if (cell1.Text != null || cell1.BGColor != 0xFFFFFFFF)
+                    {
+                        cellsToWrite.Add(cell1);
+                    }
+                }
+            }
+
+            foreach (Cell cell in cellsToWrite)
+            {
+                String Name = null;
+                Name += Convert.ToChar('A' + cell.ColumnIndex);
+                Name += (cell.RowIndex + 1).ToString();
+
+                writer.WriteStartElement("Cell");
+                writer.WriteAttributeString("Name", Name);
+
+                writer.WriteElementString("Text", cell.Text);
+                writer.WriteElementString("BGColor", cell.BGColor.ToString());
+
+                writer.WriteEndElement();
+            }
+
+            writer.WriteEndElement();
+            writer.Close();
+
+            return true;
         }
 
         // next region deals with undo/redo stack actions

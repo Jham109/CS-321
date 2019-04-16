@@ -176,7 +176,7 @@ namespace SpreadsheetEngine
                         string algorithm = ((Cell)sender).Text.TrimStart('=');
                         ((Cell)sender).variables = new List<Cell>();
                         Tree = new ExpressionTree(algorithm);
-                        string badRef = null;
+                        string reference = null;
 
                         //get list of variables and get values from the corresponding cells
                         List<string> variables = Tree.GetVariables();
@@ -186,40 +186,49 @@ namespace SpreadsheetEngine
                             int row = Convert.ToInt16(cell.Substring(1)) - 1;
                             double value;
 
-                            // if the cell exists in the spreadsheet...
-                            if ((column < 26 && column >= 0) && (row < 50 && row >= 0))
+                            // if the variable isnt this cell
+                            if (((Cell)sender).ColumnIndex != column && ((Cell)sender).RowIndex != row)
                             {
-                                //add itself to the dependent list in the cells in it's expression
-                                GetCell(row, column).AddDependent(((Cell)sender));
-
-                                //add the cells in it's expression to it's variable list
-                                ((Cell)sender).variables.Add(GetCell(row, column));
-
-                                if (Double.TryParse(GetCell(row, column).Value, out value))
+                                // if the cell exists in the spreadsheet...
+                                if ((column < 26 && column >= 0) && (row < 50 && row >= 0))
                                 {
-                                    Tree.SetVariable(cell, value);
+                                    //add itself to the dependent list in the cells in it's expression
+                                    GetCell(row, column).AddDependent(((Cell)sender));
+
+                                    //add the cells in it's expression to it's variable list
+                                    ((Cell)sender).variables.Add(GetCell(row, column));
+
+                                    if (Double.TryParse(GetCell(row, column).Value, out value))
+                                    {
+                                        Tree.SetVariable(cell, value);
+                                    }
+                                    else
+                                    {
+                                        Tree.SetVariable(cell, 0);
+                                    }
                                 }
                                 else
                                 {
-                                    Tree.SetVariable(cell, 0);
+                                    //output bad reference string if there is there is no corresponding cell
+                                    reference = "!(bad reference)";
                                 }
                             }
                             else
                             {
-                                //output bad reference string if there is there is no corresponding cell
-                                badRef = "!(bad reference)";
+                                //output self reference string if trying to reference this cell
+                                reference = "!(self reference)";
                             }
                         }
 
-                        // if the bad reference wasnt set
-                        if (badRef == null)
+                        // if the reference wasnt set
+                        if (reference == null)
                         {
                             //evaluate the tree and set it as the cell's value
                             ((Cell)sender).Value = Tree.Evaluate().ToString();
                         }
-                        else //set the value as a bad refence
+                        else //set the value as an ivalid reference
                         {
-                            ((Cell)sender).Value = badRef;
+                            ((Cell)sender).Value = reference;
                         }
                     }
                 }

@@ -96,6 +96,7 @@ namespace SpreadsheetEngine
 
         public void AddDependent(Cell cell)
         {
+            
             dependents.Add(cell);
         }
 
@@ -187,7 +188,7 @@ namespace SpreadsheetEngine
                             double value;
 
                             // if the variable isnt this cell
-                            if (((Cell)sender).ColumnIndex != column && ((Cell)sender).RowIndex != row)
+                            if (((Cell)sender).ColumnIndex != column || ((Cell)sender).RowIndex != row)
                             {
                                 // if the cell exists in the spreadsheet...
                                 if ((column < 26 && column >= 0) && (row < 50 && row >= 0))
@@ -197,7 +198,14 @@ namespace SpreadsheetEngine
 
                                     //add the cells in it's expression to it's variable list
                                     ((Cell)sender).variables.Add(GetCell(row, column));
-
+                                  
+                                    foreach (Cell var in (GetCell(row, column).variables))
+                                    {
+                                        if (HasCircularRef(GetCell(row, column), var))
+                                        {
+                                            reference = "!(Circular Reference)";
+                                        }
+                                    }
                                     if (Double.TryParse(GetCell(row, column).Value, out value))
                                     {
                                         Tree.SetVariable(cell, value);
@@ -238,6 +246,27 @@ namespace SpreadsheetEngine
                 PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs("Color"));
             }
            PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs("Value"));
+        }
+
+        private bool HasCircularRef(Cell OGCell, Cell cell)
+        {
+            if(cell ==OGCell)
+            {
+                return true;
+            }
+
+            if (cell.variables.Count == 0)
+            {
+                return false;
+            }
+            foreach( Cell var in cell.variables)
+            {
+                if(HasCircularRef(OGCell, var))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         /// <summary>

@@ -176,6 +176,7 @@ namespace SpreadsheetEngine
                         string algorithm = ((Cell)sender).Text.TrimStart('=');
                         ((Cell)sender).variables = new List<Cell>();
                         Tree = new ExpressionTree(algorithm);
+                        string badRef = null;
 
                         //get list of variables and get values from the corresponding cells
                         List<string> variables = Tree.GetVariables();
@@ -185,23 +186,41 @@ namespace SpreadsheetEngine
                             int row = Convert.ToInt16(cell.Substring(1)) - 1;
                             double value;
 
-                            //add itself to the dependent list in the cells in it's expression
-                            GetCell(row, column).AddDependent(((Cell)sender));
-                            //add the cells in it's expression to it's variable list
-                            ((Cell)sender).variables.Add(GetCell(row, column));
-
-                            if (Double.TryParse(GetCell(row, column).Value, out value))
+                            // if the cell exists in the spreadsheet...
+                            if ((column < 26 && column >= 0) && (row < 50 && row >= 0))
                             {
-                                Tree.SetVariable(cell, value);
+                                //add itself to the dependent list in the cells in it's expression
+                                GetCell(row, column).AddDependent(((Cell)sender));
+
+                                //add the cells in it's expression to it's variable list
+                                ((Cell)sender).variables.Add(GetCell(row, column));
+
+                                if (Double.TryParse(GetCell(row, column).Value, out value))
+                                {
+                                    Tree.SetVariable(cell, value);
+                                }
+                                else
+                                {
+                                    Tree.SetVariable(cell, 0);
+                                }
                             }
                             else
                             {
-                                Tree.SetVariable(cell, 0);
+                                //output bad reference string if there is there is no corresponding cell
+                                badRef = "!(bad reference)";
                             }
                         }
 
-                        //evaluate the tree and set it as the cell's value
-                        ((Cell)sender).Value = Tree.Evaluate().ToString();
+                        // if the bad reference wasnt set
+                        if (badRef == null)
+                        {
+                            //evaluate the tree and set it as the cell's value
+                            ((Cell)sender).Value = Tree.Evaluate().ToString();
+                        }
+                        else //set the value as a bad refence
+                        {
+                            ((Cell)sender).Value = badRef;
+                        }
                     }
                 }
             }

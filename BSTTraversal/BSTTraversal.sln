@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSTTraversal", "BSTTraversal\BSTTraversal.csproj", "{CF2A8A84-D2BA-4311-BA0E-58744827BEE2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TraversalTest", "TraversalTest\TraversalTest.csproj", "{EA9E95C7-CFC4-4570-B906-D65E33D08C6E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{CF2A8A84-D2BA-4311-BA0E-58744827BEE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF2A8A84-D2BA-4311-BA0E-58744827BEE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF2A8A84-D2BA-4311-BA0E-58744827BEE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA9E95C7-CFC4-4570-B906-D65E33D08C6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA9E95C7-CFC4-4570-B906-D65E33D08C6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA9E95C7-CFC4-4570-B906-D65E33D08C6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA9E95C7-CFC4-4570-B906-D65E33D08C6E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

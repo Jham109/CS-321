@@ -53,7 +53,7 @@ namespace BSTTraversal
     /// <summary>
     /// Node object stores a value and its neighboring nodes for the tree
     /// </summary>
-    class Node
+    public class Node
     {
         public int value;
         public Node right;
@@ -69,7 +69,7 @@ namespace BSTTraversal
     /// <summary>
     /// BST object previousforms different algorithms on the tree and constructs the tree
     /// </summary>
-    class BST
+    public class BST
     {
         public int nodeCount = 0;
         public int levels = 0;
